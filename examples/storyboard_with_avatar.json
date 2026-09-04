@@ -1,0 +1,59 @@
+{
+  "videoName": "NextGen_AI_Video_Pipelines",
+  "aspectRatio": "16:9",
+  "language": "en",
+  "subtitleStyleId": "f9468668-fdd7-4f78-84fc-41ceebca91f5",
+  "saveProject": true,
+  "voiceOver": {
+    "enabled": true,
+    "aiVoices": [
+      {
+        "speaker": "Martin",
+        "speed": 100,
+        "volume": 100
+      }
+    ]
+  },
+  "avatar": {
+    "avatarId": "Brandon_expressive2_public",
+    "position": "bottom-right",
+    "width": "25%",
+    "borderRadius": "100",
+    "borderColor": "rgba(255,255,255,1)",
+    "borderThickness": 3
+  },
+  "backgroundMusic": {
+    "enabled": true,
+    "autoMusic": true,
+    "volume": 0.12
+  },
+  "scenes": [
+    {
+      "story": "Autonomous video production has arrived. In modern software development, code directly drives creative visual storytelling.",
+      "background": {
+        "searchFilter": {
+          "query": "artificial intelligence neural network technology cyber connections",
+          "mediaType": "video"
+        }
+      }
+    },
+    {
+      "story": "From script generation to automated visual matching, full video rendering pipelines now execute in seconds via API.",
+      "background": {
+        "searchFilter": {
+          "query": "high speed cloud computing data center server racks glowing",
+          "mediaType": "video"
+        }
+      }
+    },
+    {
+      "story": "Welcome to frictionless content creation. Built with precision, rendered for scale.",
+      "background": {
+        "searchFilter": {
+          "query": "modern creative studio high tech video production suite screen",
+          "mediaType": "video"
+        }
+      }
+    }
+  ]
+}

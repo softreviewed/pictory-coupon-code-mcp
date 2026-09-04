@@ -1,0 +1,33 @@
+{
+  "videoName": "URL_To_Video_Showcase",
+  "aspectRatio": "16:9",
+  "language": "en",
+  "avatar": {
+    "avatarId": "Brandon_expressive2_public",
+    "position": "bottom-right",
+    "width": "25%",
+    "borderRadius": "100",
+    "borderThickness": 3,
+    "borderColor": "rgba(255,255,255,1)"
+  },
+  "voiceOver": {
+    "enabled": true,
+    "aiVoices": [
+      {
+        "speaker": "Martin",
+        "speed": 100,
+        "volume": 100
+      }
+    ]
+  },
+  "backgroundMusic": {
+    "enabled": true,
+    "autoMusic": true,
+    "volume": 0.12
+  },
+  "scenes": [
+    {
+      "blogUrl": "https://softreviewed.com/openai-gpt6-astra-benchmarks/"
+    }
+  ]
+}

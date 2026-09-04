@@ -1,7 +1,8 @@
 """Pictory MCP Server - Community Model Context Protocol Server for Pictory.ai."""
 
+import json
 import logging
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Optional, Union
 from fastmcp import FastMCP
 from pictory_mcp.client import PictoryClient, PictoryAPIError
 
@@ -23,6 +24,15 @@ def _client() -> PictoryClient:
     """Instantiate Pictory API client."""
     return PictoryClient()
 
+def _parse_json_if_str(val: Any) -> Any:
+    if isinstance(val, str):
+        try:
+            return json.loads(val)
+        except Exception:
+            return val
+    return val
+
+
 
 # =============================================================================
 # Tool 1: pictory_video
@@ -31,10 +41,10 @@ def _client() -> PictoryClient:
 @mcp.tool()
 async def pictory_video(
     action: str,
-    storyboard_payload: Optional[Dict[str, Any]] = None,
+    storyboard_payload: Optional[Union[Dict[str, Any], str]] = None,
     job_id: Optional[str] = None,
     project_id: Optional[str] = None,
-    elements_payload: Optional[Dict[str, Any]] = None,
+    elements_payload: Optional[Union[Dict[str, Any], str]] = None,
     webhook_url: Optional[str] = None,
 ) -> Dict[str, Any]:
     """Create, render, preview, and patch Pictory videos.
@@ -56,6 +66,8 @@ async def pictory_video(
         elements_payload: Partial elements JSON for surgical storyboard updates.
         webhook_url: Optional webhook URL to receive callback notification on job completion.
     """
+    storyboard_payload = _parse_json_if_str(storyboard_payload)
+    elements_payload = _parse_json_if_str(elements_payload)
     client = _client()
     try:
         if action == "render_storyboard":
@@ -127,7 +139,7 @@ async def pictory_transcribe(
     job_id: Optional[str] = None,
     max_duration: int = 60,
     transcript_text: Optional[str] = None,
-    highlight_settings: Optional[Dict[str, Any]] = None,
+    highlight_settings: Optional[Union[Dict[str, Any], str]] = None,
     webhook_url: Optional[str] = None,
 ) -> Dict[str, Any]:
     """Transcribe long-form videos/podcasts and automatically extract viral short clips (Shorts/Reels/TikToks).
@@ -347,7 +359,7 @@ async def pictory_projects(
     project_id: Optional[str] = None,
     template_id: Optional[str] = None,
     file_path: Optional[str] = None,
-    payload: Optional[Dict[str, Any]] = None,
+    payload: Optional[Union[Dict[str, Any], str]] = None,
     scene_number: Optional[int] = None,
     media_url: Optional[str] = None,
     thumbnail_url: Optional[str] = None,
@@ -373,6 +385,7 @@ async def pictory_projects(
       - 'update_template': Update an existing video template (PUT /v1/templates/{template_id}).
       - 'delete_template': Delete a video template (DELETE /v1/templates/{template_id}).
     """
+    payload = _parse_json_if_str(payload)
     client = _client()
     try:
         if action == "list_projects":
@@ -471,7 +484,7 @@ async def pictory_integrations(
     action: str,
     connection_id: Optional[str] = None,
     job_id: Optional[str] = None,
-    connection_payload: Optional[Dict[str, Any]] = None,
+    connection_payload: Optional[Union[Dict[str, Any], str]] = None,
     page: int = 1,
     page_size: int = 20,
 ) -> Dict[str, Any]:
