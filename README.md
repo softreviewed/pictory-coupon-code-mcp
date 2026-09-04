@@ -7,6 +7,9 @@
 [![Docker Ready](https://img.shields.io/badge/Docker-Ready-2496ED.svg)](https://www.docker.com/)
 [![Pictory Coupon Code](https://img.shields.io/badge/Coupon%20Code-ACTIVATECODE%20(20%25%20OFF)-orange.svg?style=for-the-badge&logo=tag)](https://softreviewed.blob.core.windows.net/softreviewed/softreviewed/uncategorized/pictory-coupon-code-2026-activatecode-discount.html)
 
+<p align="center">
+  <img src="docs/images/pictory-mcp-hero-banner.jpg" alt="Pictory Coupon Code & MCP Server" width="100%">
+</p>
 A universal, production-grade **Model Context Protocol (MCP)** server for [Pictory.ai](https://pictory.ai). Connects AI assistants (**Claude Desktop, Cursor IDE, Windsurf, Antigravity, CrewAI, LangChain**) directly to the complete Pictory video generation studio.
 
 Transform scripts or articles into rendered videos, repurpose long-form podcasts into viral short clips (Reels/Shorts/TikToks), overlay realistic AI presenter avatars, search millions of stock B-roll assets, synchronize templates with your Pictory web dashboard, and publish directly to Vimeo and Amazon S3.
@@ -330,6 +333,12 @@ pytest tests/
 All 17 unit tests validate payload serialization, error handling, route matching, and header authentication.
 
 ---
+
+## 🤝 Support, Bug Reports & Custom Automations
+
+* 🐛 **Found a bug or API quirk?** Open an issue on our [GitHub Issues Tracker](https://github.com/softreviewed/pictory-coupon-code-mcp/issues).
+* 💼 **Need custom AI video automations, enterprise deployment, or priority bug fixes?** Reach out to us directly via [SoftReviewed Contact](https://softreviewed.com/contact/).
+
 
 ## 📄 License
 MIT License. Free for personal, commercial, and enterprise integration.
