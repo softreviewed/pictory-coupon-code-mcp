@@ -10,7 +10,8 @@
 <p align="center">
   <img src="docs/images/pictory-mcp-hero-banner.jpg" alt="Pictory Coupon Code & MCP Server" width="100%">
 </p>
-A universal, production-grade **Model Context Protocol (MCP)** server for [Pictory.ai](https://pictory.ai). Connects AI assistants (**Claude Desktop, Cursor IDE, Windsurf, Antigravity, CrewAI, LangChain**) directly to the complete Pictory video generation studio.
+
+A universal, production-grade **Model Context Protocol (MCP)** server for [Pictory.ai](https://pictory.ai). Connects modern AI assistants and coding agents (**Claude Desktop, Cursor IDE, Cline, Roo Code, Windsurf, ChatGPT, Antigravity**) directly to the complete Pictory cloud video generation studio.
 
 Transform scripts or articles into rendered videos, repurpose long-form podcasts into viral short clips (Reels/Shorts/TikToks), overlay realistic AI presenter avatars, search millions of stock B-roll assets, synchronize templates with your Pictory web dashboard, and publish directly to Vimeo and Amazon S3.
 
