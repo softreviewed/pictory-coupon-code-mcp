@@ -5,7 +5,11 @@ from typing import Any, Dict, List, Optional
 from fastmcp import FastMCP
 from pictory_mcp.client import PictoryClient, PictoryAPIError
 
-logging.basicConfig(level=logging.INFO)
+import sys
+import warnings
+
+warnings.filterwarnings("ignore")
+logging.basicConfig(level=logging.ERROR, stream=sys.stderr)
 logger = logging.getLogger("pictory_mcp.server")
 
 # Initialize FastMCP Server
@@ -39,7 +43,8 @@ async def pictory_video(
       - 'render_storyboard': Render a full video from a storyboard or script payload (POST /v2/video/storyboard/render).
       - 'create_preview': Create a preview job to review storyboard scenes before spending render credits (POST /v2/video/storyboard).
       - 'render_from_preview': Render final video from an existing storyboard preview job (PUT /v2/video/render/{job_id}).
-      - 'update_elements': Surgically edit scenes, text, shapes, or visuals in an existing storyboard (PUT /v2/video/storyboard/{job_id}/elements).
+      - 'render_with_modifications': Render final video from modified storyboard preview elements (POST /v2/video/render).
+      - 'update_elements': Surgically edit scenes, text, shapes, or visuals in an existing storyboard (PUT /v2/storyboard/{job_id}/elements).
       - 'render_project': Render a video directly from an existing saved Pictory project (POST /v2/projects/{project_id}/render).
       - 'poll_job': Check the status, progress percentage, error codes, and video download URL of a job (GET /v1/jobs/{job_id}).
 
@@ -71,6 +76,13 @@ async def pictory_video(
             res = await client.render_from_preview(job_id, webhook_url=webhook_url)
             return {"success": True, "data": res}
 
+        elif action == "render_with_modifications":
+            p = storyboard_payload or elements_payload
+            if not p:
+                return {"success": False, "error": "storyboard_payload or elements_payload (renderParams) is required for 'render_with_modifications'"}
+            res = await client.render_video_with_modifications(p)
+            return {"success": True, "data": res}
+
         elif action == "update_elements":
             if not job_id:
                 return {"success": False, "error": "job_id (storyboard ID) is required for 'update_elements'"}
@@ -94,7 +106,7 @@ async def pictory_video(
         else:
             return {
                 "success": False,
-                "error": f"Unknown action '{action}'. Valid actions: render_storyboard, create_preview, render_from_preview, update_elements, render_project, poll_job",
+                "error": f"Unknown action '{action}'. Valid actions: render_storyboard, create_preview, render_from_preview, render_with_modifications, update_elements, render_project, poll_job",
             }
     except PictoryAPIError as e:
         return {"success": False, "error": e.message, "status_code": e.status_code, "details": e.details}
@@ -194,7 +206,7 @@ async def pictory_assets(
     prompt: Optional[str] = None,
     ai_model: Optional[str] = None,
     aspect_ratio: str = "16:9",
-    duration: int = 5,
+    duration: Any = 5,
     style: Optional[str] = None,
     reference_image_url: Optional[str] = None,
     file_name: Optional[str] = None,
@@ -217,7 +229,7 @@ async def pictory_assets(
       - 'list_smart_layouts': List pre-built responsive visual layouts (GET /v1/smartlayouts).
       - 'list_text_styles': List subtitle styling templates (GET /v1/styles).
       - 'list_brands': List saved video brand presets (GET /v1/brands/video).
-      - 'list_fonts': List branding fonts (GET /v1/fonts).
+      - 'list_fonts': List branding fonts (GET /v1/video/storyboard/fonts).
       - 'generate_ai_image': Generate standalone image via AI Studio (POST /v1/aistudio/images). Models: 'seedream3.0', 'flux-schnell', 'nanobanana'.
       - 'generate_ai_video': Generate standalone video via AI Studio (POST /v1/aistudio/videos). Models: 'pixverse5.5', 'veo3.1', 'veo3.1_fast'.
       - 'list_ai_assets': List past generated AI Studio images and videos.
@@ -334,7 +346,16 @@ async def pictory_projects(
     action: str,
     project_id: Optional[str] = None,
     template_id: Optional[str] = None,
+    file_path: Optional[str] = None,
     payload: Optional[Dict[str, Any]] = None,
+    scene_number: Optional[int] = None,
+    media_url: Optional[str] = None,
+    thumbnail_url: Optional[str] = None,
+    duration: Optional[float] = None,
+    text: Optional[str] = None,
+    asset_id: Optional[str] = None,
+    library: str = "getty",
+    description: Optional[str] = None,
     page: int = 1,
     page_size: int = 20,
 ) -> Dict[str, Any]:
@@ -344,6 +365,7 @@ async def pictory_projects(
       - 'list_projects': List all saved projects in your Pictory web dashboard (GET /v2/projects).
       - 'get_project': Get complete scene data for a specific project ID (GET /v2/projects/{project_id}).
       - 'update_project': Update an existing project's scenes, text, or settings (PUT /v2/projects/{project_id}).
+      - 'update_scene': Surgically update a single scene's footage, thumbnail, duration, or text with auto-concurrency retry and schema protection.
       - 'delete_project': Delete a project from your account (DELETE /v2/projects/{project_id}).
       - 'list_templates': List saved master video templates (GET /v1/templates).
       - 'get_template': Get template configuration by ID (GET /v1/templates/{template_id}).
@@ -371,6 +393,26 @@ async def pictory_projects(
             res = await client.update_project(project_id, payload)
             return {"success": True, "data": res}
 
+        elif action == "update_scene":
+            if not project_id:
+                return {"success": False, "error": "project_id is required for 'update_scene'"}
+            p = payload or {}
+            s_num = scene_number if scene_number is not None else p.get("scene_number")
+            if s_num is None:
+                return {"success": False, "error": "scene_number is required for 'update_scene' (1-indexed integer, at top-level or inside payload)"}
+            res = await client.update_scene(
+                project_id=project_id,
+                scene_number=int(s_num),
+                media_url=media_url or p.get("media_url"),
+                thumbnail_url=thumbnail_url or p.get("thumbnail_url"),
+                duration=duration if duration is not None else p.get("duration"),
+                text=text or p.get("text"),
+                asset_id=str(asset_id) if asset_id else (str(p.get("asset_id")) if p.get("asset_id") else None),
+                library=p.get("library", library or "getty"),
+                description=description or p.get("description"),
+            )
+            return {"success": True, "data": res}
+
         elif action == "delete_project":
             if not project_id:
                 return {"success": False, "error": "project_id is required for 'delete_project'"}
@@ -388,9 +430,10 @@ async def pictory_projects(
             return {"success": True, "data": res}
 
         elif action == "create_template":
-            if not payload:
-                return {"success": False, "error": "payload is required for 'create_template'"}
-            res = await client.create_template(payload)
+            target = file_path or payload
+            if not target:
+                return {"success": False, "error": "file_path (to .pictai file) or payload is required for 'create_template'"}
+            res = await client.create_template(target)
             return {"success": True, "data": res}
 
         elif action == "update_template":
@@ -410,7 +453,7 @@ async def pictory_projects(
         else:
             return {
                 "success": False,
-                "error": f"Unknown action '{action}'. Valid actions: list_projects, get_project, update_project, delete_project, list_templates, get_template, create_template, update_template, delete_template",
+                "error": f"Unknown action '{action}'. Valid actions: list_projects, get_project, update_project, update_scene, delete_project, list_templates, get_template, create_template, update_template, delete_template",
             }
     except PictoryAPIError as e:
         return {"success": False, "error": e.message, "status_code": e.status_code, "details": e.details}
@@ -438,15 +481,17 @@ async def pictory_integrations(
       - 'get_quota': Check current API video render quota and usage limits (GET /v1/quota).
       - 'get_credit_usage': Check remaining AI generation credits and breakdown (GET /v1/aicredits/usage).
       - 'list_jobs': List recent and running render jobs across your account (GET /v1/jobs).
-      - 'clean_job': Cancel or delete a stuck/failed job (DELETE /v1/jobs/{job_id}).
-      - 'list_vimeo_connections': List connected Vimeo accounts for direct video publishing (GET /v1/vimeo).
-      - 'get_vimeo_connection': Get details for a Vimeo connection (GET /v1/vimeo/{id}).
-      - 'create_vimeo_connection': Authorize a new Vimeo connection (POST /v1/vimeo).
-      - 'delete_vimeo_connection': Disconnect a Vimeo account (DELETE /v1/vimeo/{id}).
-      - 'list_aws_connections': List private AWS S3 bucket connections (GET /v1/aws).
-      - 'get_aws_connection': Get details for an AWS private S3 connection (GET /v1/aws/{id}).
-      - 'create_aws_connection': Connect a private AWS S3 bucket using IAM keys (POST /v1/aws).
-      - 'delete_aws_connection': Remove an AWS connection (DELETE /v1/aws/{id}).
+      - 'clean_job': Cancel or delete a stuck/failed job (DELETE /v1/jobs/{job_id}/clean).
+      - 'list_vimeo_connections': List connected Vimeo accounts for direct video publishing (GET /v1/vimeo-connections).
+      - 'get_vimeo_connection': Get details for a Vimeo connection (GET /v1/vimeo-connections/{id}).
+      - 'create_vimeo_connection': Authorize a new Vimeo connection (POST /v1/vimeo-connections).
+      - 'update_vimeo_connection': Update an existing Vimeo connection (PUT /v1/vimeo-connections/{id}).
+      - 'delete_vimeo_connection': Disconnect a Vimeo account (DELETE /v1/vimeo-connections/{id}).
+      - 'list_aws_connections': List private AWS S3 bucket connections (GET /v1/awsconnections).
+      - 'get_aws_connection': Get details for an AWS private S3 connection (GET /v1/awsconnections/{id}).
+      - 'create_aws_connection': Connect a private AWS S3 bucket using IAM keys (POST /v1/awsconnections).
+      - 'update_aws_connection': Update an AWS private S3 connection (PUT /v1/awsconnections/{id}).
+      - 'delete_aws_connection': Remove an AWS connection (DELETE /v1/awsconnections/{id}).
     """
     client = _client()
     try:
@@ -484,6 +529,14 @@ async def pictory_integrations(
             res = await client.create_vimeo_connection(connection_payload)
             return {"success": True, "data": res}
 
+        elif action == "update_vimeo_connection":
+            if not connection_id:
+                return {"success": False, "error": "connection_id is required for 'update_vimeo_connection'"}
+            if not connection_payload:
+                return {"success": False, "error": "connection_payload is required for 'update_vimeo_connection'"}
+            res = await client.update_vimeo_connection(connection_id, connection_payload)
+            return {"success": True, "data": res}
+
         elif action == "delete_vimeo_connection":
             if not connection_id:
                 return {"success": False, "error": "connection_id is required for 'delete_vimeo_connection'"}
@@ -506,6 +559,14 @@ async def pictory_integrations(
             res = await client.create_aws_connection(connection_payload)
             return {"success": True, "data": res}
 
+        elif action == "update_aws_connection":
+            if not connection_id:
+                return {"success": False, "error": "connection_id is required for 'update_aws_connection'"}
+            if not connection_payload:
+                return {"success": False, "error": "connection_payload is required for 'update_aws_connection'"}
+            res = await client.update_aws_connection(connection_id, connection_payload)
+            return {"success": True, "data": res}
+
         elif action == "delete_aws_connection":
             if not connection_id:
                 return {"success": False, "error": "connection_id is required for 'delete_aws_connection'"}
@@ -515,7 +576,7 @@ async def pictory_integrations(
         else:
             return {
                 "success": False,
-                "error": f"Unknown action '{action}'. Valid actions: get_quota, get_credit_usage, list_jobs, clean_job, list_vimeo_connections, get_vimeo_connection, create_vimeo_connection, delete_vimeo_connection, list_aws_connections, get_aws_connection, create_aws_connection, delete_aws_connection",
+                "error": f"Unknown action '{action}'. Valid actions: get_quota, get_credit_usage, list_jobs, clean_job, list_vimeo_connections, get_vimeo_connection, create_vimeo_connection, update_vimeo_connection, delete_vimeo_connection, list_aws_connections, get_aws_connection, create_aws_connection, update_aws_connection, delete_aws_connection",
             }
     except PictoryAPIError as e:
         return {"success": False, "error": e.message, "status_code": e.status_code, "details": e.details}
