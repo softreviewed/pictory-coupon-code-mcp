@@ -1,10 +1,11 @@
-# 🎬 Pictory AI MCP Server (`pictory-mcp`)
+# 🎬 Pictory Coupon Code & MCP Server: Automate AI Videos (20% Off: activatecode)
 
 [![MCP Protocol](https://img.shields.io/badge/MCP-Standard%202.0-blue.svg)](https://modelcontextprotocol.io/)
 [![FastMCP](https://img.shields.io/badge/FastMCP-2.x-green.svg)](https://github.com/jlowin/fastmcp)
 [![Python](https://img.shields.io/badge/python-3.10%2B-blue.svg)](https://www.python.org/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Docker Ready](https://img.shields.io/badge/Docker-Ready-2496ED.svg)](https://www.docker.com/)
+[![Pictory Coupon Code](https://img.shields.io/badge/Coupon%20Code-ACTIVATECODE%20(20%25%20OFF)-orange.svg?style=for-the-badge&logo=tag)](https://softreviewed.blob.core.windows.net/softreviewed/softreviewed/uncategorized/pictory-coupon-code-2026-activatecode-discount.html)
 
 A universal, production-grade **Model Context Protocol (MCP)** server for [Pictory.ai](https://pictory.ai). Connects AI assistants (**Claude Desktop, Cursor IDE, Windsurf, Antigravity, CrewAI, LangChain**) directly to the complete Pictory video generation studio.
 
@@ -38,10 +39,19 @@ pictory_video  pictory_transcribe pictory_assets pictory_projects pictory_integr
 
 ## 🚀 Quickstart (1-Minute Setup)
 
-### 1. Get Your Pictory API Key
-1. Log in to [Pictory.ai](https://app.pictory.ai).
-2. Go to **Settings** → **API Access** (or visit [https://app.pictory.ai/api-access](https://app.pictory.ai/api-access)).
-3. Copy your API key (`pictai_...`).
+### 1. Get Your Pictory API Key & Exclusive Community Discount
+
+To use this MCP server, you need a Pictory account and API key.
+
+> [!TIP]
+> ### 🎁 Exclusive Community Perk: Save ~60% with Verified Coupon Code
+> If you are setting up or upgrading your Pictory account, you can combine Pictory's **40% annual subscription discount** with our verified partner coupon code **`activatecode`** for an extra **20% recurring discount** (saving up to $94/year):
+> 
+> * **Verified Coupon Code:** `activatecode`
+> * **Direct Activation Link:** [Activate 20% Off Pictory AI](https://softreviewed.com/pictory-discount)
+> * **Step-by-Step Checkout Guide:** For exact walkthrough steps on how to stack the 40% annual discount with the promo code, read our in-depth [Pictory Coupon Code & Stacking Guide](https://softreviewed.blob.core.windows.net/softreviewed/softreviewed/uncategorized/pictory-coupon-code-2026-activatecode-discount.html).
+> 
+> *Once subscribed, navigate to **Settings** → **API Access** (or visit [https://app.pictory.ai/api-access](https://app.pictory.ai/api-access)) and copy your API key.*
 
 ---
 
@@ -124,6 +134,19 @@ Give Pictory a public URL and an avatar configuration — it will automatically 
   ]
 }
 ```
+
+---
+
+## ❓ Frequently Asked Questions (FAQ)
+
+### How do I get the maximum discount with the Pictory coupon code?
+You can stack Pictory's built-in 40% annual billing discount with our exclusive coupon code **`activatecode`** to receive an effective **~60% total discount**. For a complete walkthrough of the checkout steps and plan comparison, read the [Pictory Coupon Code 2026 Stacking Guide](https://softreviewed.blob.core.windows.net/softreviewed/softreviewed/uncategorized/pictory-coupon-code-2026-activatecode-discount.html).
+
+### Does this MCP server support custom avatar positioning?
+Yes! You can configure the `avatar` object with circular bubbles (`borderRadius: "100"`), custom widths (`width: "25%"`), border colors, and position presets (`bottom-right`, `bottom-left`, `center`).
+
+### Can I preview storyboards before spending render credits?
+Yes! Use `pictory_video` with `action="create_preview"` to generate scene thumbnails and inspect the visual flow before calling `render_from_preview`.
 
 ---
 
