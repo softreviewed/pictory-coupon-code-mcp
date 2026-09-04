@@ -84,7 +84,83 @@ Add to your `claude_desktop_config.json`:
 5. Command: `uvx pictory-mcp`
 6. Environment variable: `PICTORY_API_KEY=pictai_your_api_key_here`
 
-#### 🟢 Option C: Docker MCP Gateway
+#### 🟠 Option C: Cline (VS Code Extension)
+In VS Code with the [Cline](https://github.com/cline/cline) extension:
+1. Open the Cline panel → Click the **MCP Servers** icon (plug icon).
+2. Click **Configure MCP Servers** (or open `%APPDATA%\Code\User\globalStorage\saoudrizwan.claude-dev\settings\cline_mcp_settings.json`).
+3. Add the `pictory` configuration:
+```json
+{
+  "mcpServers": {
+    "pictory": {
+      "command": "uvx",
+      "args": ["pictory-mcp"],
+      "env": {
+        "PICTORY_API_KEY": "pictai_your_api_key_here"
+      },
+      "disabled": false,
+      "autoApprove": []
+    }
+  }
+}
+```
+
+#### 🦘 Option D: Roo Code (VS Code Extension)
+In VS Code with [Roo Code](https://github.com/RooVetGit/Roo-Code):
+1. Open Roo Code settings → **MCP Servers** tab.
+2. Edit `cline_mcp_settings.json` (stored in `%APPDATA%\Code\User\globalStorage\rooveterinaryinc.roo-cline\settings\cline_mcp_settings.json`):
+```json
+{
+  "mcpServers": {
+    "pictory": {
+      "command": "uvx",
+      "args": ["pictory-mcp"],
+      "env": {
+        "PICTORY_API_KEY": "pictai_your_api_key_here"
+      }
+    }
+  }
+}
+```
+
+#### 🌊 Option E: Windsurf (Codeium)
+Add to your `~/.codeium/windsurf/mcp_config.json`:
+```json
+{
+  "mcpServers": {
+    "pictory": {
+      "command": "uvx",
+      "args": ["pictory-mcp"],
+      "env": {
+        "PICTORY_API_KEY": "pictai_your_api_key_here"
+      }
+    }
+  }
+}
+```
+
+#### ⚙️ Option F: OpenCode & Continue.dev
+In `~/.continue/config.json`:
+```json
+{
+  "experimental": {
+    "modelContextProtocolServers": [
+      {
+        "transport": {
+          "type": "stdio",
+          "command": "uvx",
+          "args": ["pictory-mcp"],
+          "env": {
+            "PICTORY_API_KEY": "pictai_your_api_key_here"
+          }
+        }
+      }
+    ]
+  }
+}
+```
+
+#### 🐳 Option G: Docker MCP Gateway
 Add to `custom.yaml` or run directly:
 ```bash
 docker mcp server enable pictory
@@ -101,6 +177,55 @@ docker mcp server enable pictory
 | `pictory_assets` | Stock & AI Asset Engine | `search_media`, `search_music`, `list_music_genres`, `list_music_moods`, `list_avatars`, `list_voiceovers`, `list_styles`, `list_fonts`, `generate_ai_image`, `generate_ai_video`, `get_signed_url` |
 | `pictory_projects` | Project & Template Sync | `list_projects`, `get_project`, `update_project`, `delete_project`, `list_templates`, `get_template`, `create_template`, `update_template`, `delete_template`, `update_scene` |
 | `pictory_integrations`| Cloud & Account Ops | `get_quota`, `get_aicredits_usage`, `list_vimeo_connections`, `create_vimeo_connection`, `list_aws_connections`, `create_aws_connection`, `clean_job` |
+
+---
+
+## 💡 Practical Automation Use Cases & Workflows
+
+Here are 5 real-world automation blueprints you can build immediately with this MCP server:
+
+### 🌟 1. Automated Blog-to-Video Pipeline (Content Repurposing)
+```
+New Blog Post URL ──▶ Pictory MCP (Scrapes & Summarizes) ──▶ Matches Getty B-Roll + Voiceover ──▶ 1080p MP4 Ready
+```
+* **How it works:** When a new article is published on WordPress or Ghost, your agent calls `pictory_video` with `"blogUrl": "https://yoursite.com/article"`. Pictory automatically reads the article, extracts the core talking points, generates a multi-scene storyboard, matches Storyblocks B-roll for each sentence, and overlays a synchronized talking-head presenter avatar.
+* **Result:** Repurpose 1 written article into a professional YouTube video in under 3 minutes with zero video editing software.
+
+---
+
+### 🌟 2. Long Video to Viral Shorts & Reels Generator (9:16)
+```
+Long Podcast/Webinar ──▶ pictory_transcribe ──▶ AI Engagement Scoring ──▶ Vertical Clip + Karaoke Captions
+```
+* **How it works:** Pass an existing YouTube video or webinar recording URL to `pictory_transcribe` (`action="transcribe_video"` with `max_duration=60`). Pictory transcribes the full audio, runs sentiment and engagement analysis to detect the most captivating moments, and slices them into 60-second vertical (9:16) clips with dynamic, word-by-word highlighted captions.
+* **Result:** Generate 5-10 high-converting TikToks, Instagram Reels, and YouTube Shorts from a single podcast.
+
+---
+
+### 🌟 3. Autonomous "Faceless" YouTube Channel Engine
+```
+AI Writes Script ──▶ pictory_assets (Curate Music & Footage) ──▶ pictory_video (Render) ──▶ Full Video
+```
+* **How it works:** Your AI assistant (Claude, Cursor, or Cline) writes a compelling 5-minute educational script. The agent queries `pictory_assets` to search for thematic background music (`search_music` by genre or mood like "Inspiring" or "Cinematic") and applies a modern subtitle animation preset (`list_styles`). The agent then compiles the complete project via `render_storyboard`.
+* **Result:** 100% hands-free faceless video generation for niche YouTube channels, documentation hubs, or educational tutorials.
+
+---
+
+### 🌟 4. Zero-Credit Scene Optimization & A/B Testing
+```
+create_preview (0 Credits) ──▶ Inspect Thumbnails ──▶ update_scene (Surgical Tweak) ──▶ Final Render
+```
+* **How it works:** Before rendering, call `pictory_video` (`action="create_preview"`). This gives you complete scene breakdown, thumbnail URLs, and duration timings **without consuming any of your monthly render minutes**. If Scene 2 needs a different hook or Scene 4 needs a different B-roll clip, use `pictory_projects` (`action="update_scene"`) to surgically swap it before triggering the final render.
+* **Result:** Eliminates wasted credits and lets you A/B test different hooks and titles risk-free.
+
+---
+
+### 🌟 5. Enterprise S3 & Vimeo Auto-Publishing Pipeline
+```
+Video Render Finished ──▶ pictory_integrations ──▶ Direct Upload to AWS S3 & Vimeo Showcase
+```
+* **How it works:** Connect your enterprise cloud infrastructure once using `create_aws_connection` or `create_vimeo_connection`. Whenever a video rendering job finishes, Pictory automatically publishes the high-bitrate MP4 directly into your private AWS S3 bucket or Vimeo channel.
+* **Result:** Complete end-to-end automation from raw text prompt to cloud-hosted streaming delivery.
 
 ---
 
