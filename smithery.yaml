@@ -1,0 +1,12 @@
+startCommand:
+  type: stdio
+  config:
+    command: python
+    args:
+      - -u
+      - server.py
+    env:
+      PICTORY_API_KEY:
+        type: string
+        description: Your Pictory.ai API key from https://app.pictory.ai/api-access
+        required: true
