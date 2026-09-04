@@ -11,7 +11,7 @@
   <img src="docs/images/pictory-mcp-hero-banner.jpg" alt="Pictory Coupon Code & MCP Server" width="100%">
 </p>
 
-A universal, production-grade **Model Context Protocol (MCP)** server for [Pictory.ai](https://softreviewed.com/pictory-discount). Connects modern AI assistants and coding agents (**Claude Desktop, Cursor IDE, Cline, Roo Code, Windsurf, ChatGPT, Antigravity**) directly to the complete Pictory cloud video generation studio.
+A universal, production-grade **Model Context Protocol (MCP)** server for [Pictory.ai](https://pictory.ai?ref=activatecode). Connects modern AI assistants and coding agents (**Claude Desktop, Cursor IDE, Cline, Roo Code, Windsurf, ChatGPT, Antigravity**) directly to the complete Pictory cloud video generation studio.
 
 Transform scripts or articles into rendered videos, repurpose long-form podcasts into viral short clips (Reels/Shorts/TikToks), overlay realistic AI presenter avatars, search millions of stock B-roll assets, synchronize templates with your Pictory web dashboard, and publish directly to Vimeo and Amazon S3.
 
@@ -52,10 +52,10 @@ To use this MCP server, you need a Pictory account and API key.
 > If you are setting up or upgrading your Pictory account, you can combine Pictory's **40% annual subscription discount** with our verified partner coupon code **`activatecode`** for an extra **20% recurring discount** (saving up to $94/year):
 > 
 > * **Verified Coupon Code:** `activatecode`
-> * **Direct Activation Link:** [Activate 20% Off Pictory AI](https://softreviewed.com/pictory-discount)
+> * **Direct Activation Link:** [Activate 20% Off Pictory AI](https://pictory.ai?ref=activatecode)
 > * **Step-by-Step Checkout Guide:** For exact walkthrough steps on how to stack the 40% annual discount with the promo code, read our in-depth [Pictory Coupon Code & Stacking Guide](https://softreviewed.blob.core.windows.net/softreviewed/softreviewed/uncategorized/pictory-coupon-code-2026-activatecode-discount.html).
 > 
-> *Once subscribed, navigate to **Settings** → **API Access** (or visit [https://app.pictory.ai/api-access](https://app.pictory.ai/api-access)) and copy your API key.*
+> *Once subscribed, navigate to **Settings** → **API Access** (or visit [https://app.pictory.ai/api-access](https://app.pictory.ai/api-access?ref=activatecode)) and copy your API key.*
 
 ---
 
@@ -292,7 +292,7 @@ You can edit scenes at any time using:
 * **`render_storyboard` (Video Render):** Submits a complete multi-scene composition (text, narration audio, avatar, background B-roll, subtitles, and music) to Pictory's cloud rendering engine to stitch everything into a polished 1080p/4K MP4.
 
 ### 6. Can projects created via MCP be viewed and edited in the official Pictory web dashboard?
-**Yes, 100%!** Every storyboard created through this MCP server produces a legitimate `project_id`. You can call `pictory_projects` (`action="get_project"`) or simply log into [app.pictory.ai](https://app.pictory.ai) to see your project synchronized in real time. Any change made in the web UI reflects in the API, and vice-versa.
+**Yes, 100%!** Every storyboard created through this MCP server produces a legitimate `project_id`. You can call `pictory_projects` (`action="get_project"`) or simply log into [app.pictory.ai](https://app.pictory.ai?ref=activatecode) to see your project synchronized in real time. Any change made in the web UI reflects in the API, and vice-versa.
 
 ### 7. How do I customize avatar positioning, circular bubbles, and styling?
 The top-level `avatar` object gives you complete layout control:
