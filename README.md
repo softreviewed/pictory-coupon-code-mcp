@@ -137,16 +137,62 @@ Give Pictory a public URL and an avatar configuration — it will automatically 
 
 ---
 
-## ❓ Frequently Asked Questions (FAQ)
+## ❓ Frequently Asked Questions & Developer Guide (Complete FAQ)
 
-### How do I get the maximum discount with the Pictory coupon code?
-You can stack Pictory's built-in 40% annual billing discount with our exclusive coupon code **`activatecode`** to receive an effective **~60% total discount**. For a complete walkthrough of the checkout steps and plan comparison, read the [Pictory Coupon Code 2026 Stacking Guide](https://softreviewed.blob.core.windows.net/softreviewed/softreviewed/uncategorized/pictory-coupon-code-2026-activatecode-discount.html).
+Every question below was answered and verified during live API integration and test runs on the Pictory API v2 production engine:
 
-### Does this MCP server support custom avatar positioning?
-Yes! You can configure the `avatar` object with circular bubbles (`borderRadius: "100"`), custom widths (`width: "25%"`), border colors, and position presets (`bottom-right`, `bottom-left`, `center`).
+### 1. Can I turn a blog/website URL into a video with stock footage AND a talking head?
+**Yes, absolutely!** When you specify `"blogUrl": "https://your-site.com/article"` in a scene, Pictory automatically:
+1. Scrapes the article text and summarizes key takeaways into individual scenes.
+2. Searches Getty Images & Storyblocks to match dynamic B-roll video for every sentence.
+3. Overlays the synchronized talking-head AI avatar (`avatarId`) with real-time lip sync and voice narration across all scenes.
 
-### Can I preview storyboards before spending render credits?
-Yes! Use `pictory_video` with `action="create_preview"` to generate scene thumbnails and inspect the visual flow before calling `render_from_preview`.
+### 2. How can I review scenes before spending my video render credits?
+Use `pictory_video` with `action="create_preview"`. This generates a **Storyboard Preview Job** that returns scene thumbnails, text breakdowns, and timings **without deducting render minutes**. Once you review and approve the preview, call `action="render_from_preview"` with the `job_id` to render the final 1080p MP4.
+
+### 3. How do I make surgical changes to an individual scene without re-rendering everything?
+You can edit scenes at any time using:
+* `pictory_video` (`action="update_elements"`): Send a partial JSON array containing only the scene elements (text, background URL, duration, or font) you wish to modify.
+* `pictory_projects` (`action="update_scene"`): Target an exact `project_id` and `scene_number` to swap background media or edit the script line while leaving all other scenes untouched.
+
+### 4. Does editing scenes or previewing videos cost credits?
+**No!** Editing scene text, swapping background assets, adjusting durations, and generating storyboard previews are **100% free** and deduct **zero** video render minutes. Credits are only consumed when a final video is rendered into an MP4 file on Pictory's cloud servers.
+
+### 5. What is the difference between Video Search (`search_media`) and Video Render (`render_storyboard`)?
+* **`search_media` (Stock Search):** Instantly searches Storyblocks and Getty Images catalogs for stock video footage and returns preview URLs and metadata for inspection.
+* **`render_storyboard` (Video Render):** Submits a complete multi-scene composition (text, narration audio, avatar, background B-roll, subtitles, and music) to Pictory's cloud rendering engine to stitch everything into a polished 1080p/4K MP4.
+
+### 6. Can projects created via MCP be viewed and edited in the official Pictory web dashboard?
+**Yes, 100%!** Every storyboard created through this MCP server produces a legitimate `project_id`. You can call `pictory_projects` (`action="get_project"`) or simply log into [app.pictory.ai](https://app.pictory.ai) to see your project synchronized in real time. Any change made in the web UI reflects in the API, and vice-versa.
+
+### 7. How do I customize avatar positioning, circular bubbles, and styling?
+The top-level `avatar` object gives you complete layout control:
+* **Position:** `"bottom-right"`, `"bottom-left"`, `"center"`, `"top-right"`, `"top-left"`.
+* **Width:** `"25%"` (floating corner bubble), `"50%"` (split-screen presenter), or `"100%"` (full-screen talking head).
+* **Border & Shape:** Set `"borderRadius": "100"` for a circular bubble or `"0"` for square. Add `"borderThickness": 3` and `"borderColor": "rgba(255,255,255,1)"` for a crisp white outline.
+
+### 8. Does Pictory support generative AI models (like PixVerse, Stable Diffusion), and how are credits handled?
+**Yes!** Through `pictory_assets`:
+* **AI Video:** Generate custom B-roll clips with PixVerse (`action="generate_ai_video"`).
+* **AI Images:** Generate custom photorealistic images with Recraft or Stable Diffusion (`action="generate_ai_image"`).
+* **Credit Pool:** AI Studio generations consume your account's monthly **AI Credits** pool, which is tracked separately from your **Video Render Minutes** pool. Check both anytime using `pictory_integrations` (`action="get_aicredits_usage"` and `action="get_quota"`).
+
+### 9. How does background music work, and does it interfere with voiceover?
+Pictory features intelligent **audio auto-ducking**. When you enable `backgroundMusic` alongside an AI `voiceOver` track, Pictory dynamically lowers the music volume (to ~10-15%) whenever the narrator speaks, and gently swells the volume during natural pauses. You can also search thousands of tracks by mood and genre (`pictory_assets` -> `search_music`).
+
+### 10. Can I turn long YouTube videos or podcasts into viral short clips (Shorts/Reels/TikToks)?
+**Yes!** Call `pictory_transcribe` with `action="transcribe_video"` and specify a target `max_duration` (e.g., 60 seconds). Pictory transcribes the audio, detects the most viral and engaging hooks using sentence scoring, and outputs vertical (9:16) clips with dynamic word-by-word highlighted captions.
+
+### 11. What is the critical API quirk with highlight extraction (`jobId` in path)?
+In the official Pictory API v2, highlight extraction endpoints (`GET /v2/transcription/highlights/{jobId}`) require the `jobId` to be provided in the **URL path**, not within the JSON request body. This MCP server handles this URL parameter mapping automatically so you never encounter 404 or 400 parameter errors.
+
+### 12. Can Pictory export rendered videos directly to private cloud storage or Vimeo?
+**Yes!** Through `pictory_integrations`:
+* **Vimeo Integration:** Connect your Vimeo account (`create_vimeo_connection`) to automatically push finished videos to Vimeo.
+* **AWS S3 Storage:** Connect your private AWS S3 bucket (`create_aws_connection`) to automatically archive high-resolution MP4s directly to your own enterprise cloud infrastructure.
+
+### 13. How do I get the maximum discount with the Pictory coupon code?
+Stack Pictory's built-in 40% annual billing discount with our exclusive community coupon code **`activatecode`** to receive an effective **~60% total discount** (saving up to $94/year). For a complete checkout walkthrough and plan pricing comparison, read our in-depth [Pictory Coupon Code 2026 Stacking Guide](https://softreviewed.blob.core.windows.net/softreviewed/softreviewed/uncategorized/pictory-coupon-code-2026-activatecode-discount.html).
 
 ---
 
