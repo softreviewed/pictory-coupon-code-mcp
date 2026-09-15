@@ -5,7 +5,7 @@
 [![Python](https://img.shields.io/badge/python-3.10%2B-blue.svg)](https://www.python.org/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Docker Ready](https://img.shields.io/badge/Docker-Ready-2496ED.svg)](https://www.docker.com/)
-[![Pictory Coupon Code](https://img.shields.io/badge/Coupon%20Code-ACTIVATECODE%20(20%25%20OFF)-orange.svg?style=for-the-badge&logo=tag)](https://softreviewed.blob.core.windows.net/softreviewed/softreviewed/uncategorized/pictory-coupon-code-2026-activatecode-discount.html)
+[![Pictory Coupon Code](https://img.shields.io/badge/Coupon%20Code-ACTIVATECODE%20(20%25%20OFF)-orange.svg?style=for-the-badge&logo=tag)](https://softreviewed.com/pictory-ai-coupon-code/)
 
 <p align="center">
   <img src="docs/images/pictory-mcp-hero-banner.jpg" alt="Pictory Coupon Code & MCP Server" width="100%">
@@ -53,7 +53,8 @@ To use this MCP server, you need a Pictory account and API key.
 > 
 > * **Verified Coupon Code:** `activatecode`
 > * **Direct Activation Link:** [Activate 20% Off Pictory AI](https://pictory.ai?ref=activatecode)
-> * **Step-by-Step Checkout Guide:** For exact walkthrough steps on how to stack the 40% annual discount with the promo code, read our in-depth [Pictory Coupon Code & Stacking Guide](https://softreviewed.blob.core.windows.net/softreviewed/softreviewed/uncategorized/pictory-coupon-code-2026-activatecode-discount.html).
+> * **Step-by-Step Checkout Guide:** For exact walkthrough steps on how to stack the 40% annual discount with the promo code, read our in-depth [Pictory AI coupon code guide](https://softreviewed.com/pictory-ai-coupon-code/).
+> * **Video Tutorial:** Watch our step-by-step [Pictory coupon code video walkthrough](https://www.youtube.com/watch?v=uCU2YoUb9xQ).
 > 
 > *Once subscribed, navigate to **Settings** → **API Access** (or visit [https://app.pictory.ai/api-access](https://app.pictory.ai/api-access?ref=activatecode)) and copy your API key.*
 
@@ -321,7 +322,7 @@ In the official Pictory API v2, highlight extraction endpoints (`GET /v2/transcr
 * **AWS S3 Storage:** Connect your private AWS S3 bucket (`create_aws_connection`) to automatically archive high-resolution MP4s directly to your own enterprise cloud infrastructure.
 
 ### 13. How do I get the maximum discount with the Pictory coupon code?
-Stack Pictory's built-in 40% annual billing discount with our exclusive community coupon code **`activatecode`** to receive an effective **~60% total discount** (saving up to $94/year). For a complete checkout walkthrough and plan pricing comparison, read our in-depth [Pictory Coupon Code 2026 Stacking Guide](https://softreviewed.blob.core.windows.net/softreviewed/softreviewed/uncategorized/pictory-coupon-code-2026-activatecode-discount.html).
+Stack Pictory's built-in 40% annual billing discount with our exclusive community coupon code **`activatecode`** to receive an effective **~60% total discount** (saving up to $94/year). For a complete checkout walkthrough and plan pricing comparison, read our in-depth [Pictory coupon code](https://softreviewed.com/pictory-ai-coupon-code/) guide.
 
 ---
 
